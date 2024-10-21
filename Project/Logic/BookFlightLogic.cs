@@ -10,11 +10,92 @@ public class BookFlightLogic
         LoadAllFlights();
     }
 
-    // Laad alle vluchten in de constructor
+    // Laad alle vluchten (hier aanpassen om willekeurige vluchten te genereren)
     private void LoadAllFlights()
     {
-        FlightsAccess flightsAccess = new FlightsAccess();
-        flights = flightsAccess.ReadAll();
+        flights = GenerateRandomFlights(30); // Genereer 30 willekeurige vluchten bij elke start
+    }
+
+    // Methode om willekeurige vluchten te genereren
+    private List<FlightModel> GenerateRandomFlights(int numberOfFlights)
+    {
+        List<FlightModel> randomFlights = new List<FlightModel>();
+        Random random = new Random();
+        string[] europeanAirports = {
+            "Schiphol Airport",
+            "Charles de Gaulle Airport",
+            "Heathrow Airport",
+            "Frankfurt Airport",
+            "Brussels Airport",
+            "Istanbul Airport",
+            "Warsaw Chopin Airport",
+            "Budapest Ferenc Liszt International Airport",
+            "Barcelona-El Prat Airport",
+            "Riga International Airport",
+            "Athens International Airport",
+            "Lisbon Airport"
+        };
+
+        string[] europeanDestinations = {
+            "Amsterdam",
+            "Paris",
+            "London",
+            "Frankfurt",
+            "Brussels",
+            "Istanbul",
+            "Warsaw",
+            "Budapest",
+            "Barcelona",
+            "Riga",
+            "Athens",
+            "Lisbon"
+        };
+        
+        for (int i = 0; i < numberOfFlights; i++)
+        {
+            string arrivalAirport = europeanAirports[random.Next(europeanAirports.Length)];
+            string arrivalDestination = europeanDestinations[random.Next(europeanDestinations.Length)];
+            decimal ticketPrice = random.Next(100, 500); // Willekeurige prijs tussen 100 en 500
+            string gate = "Gate " + random.Next(1, 10); // Willekeurige gate tussen 1 en 10
+            string departureDate = GenerateRandomDate(); // Willekeurige datum genereren
+            string flightTime = GenerateRandomFlightTime(); // Willekeurige vluchtduur genereren
+
+            FlightModel flight = new FlightModel(
+                "BOSST Airlines", 
+                null, 
+                ticketPrice, 
+                gate, 
+                "Rotterdam The Hague Airport", 
+                arrivalAirport, 
+                arrivalDestination, 
+                false, 
+                departureDate, 
+                flightTime);
+
+            randomFlights.Add(flight);
+        }
+
+        return randomFlights;
+    }
+
+    // Methode om willekeurige datum te genereren
+    private string GenerateRandomDate()
+    {
+        DateTime start = new DateTime(2024, 10, 29);
+        DateTime end = new DateTime(2025, 4, 24);
+        int range = (end - start).Days;
+        return start.AddDays(new Random().Next(range)).ToString("dd-MM-yyyy");
+    }
+
+    // Methode om willekeurige vluchtduur te genereren
+    private string GenerateRandomFlightTime()
+    {
+        Random random = new Random();
+        int departureHour = random.Next(6, 22); // Willekeurige vertrektijd tussen 6 en 22 uur
+        int flightDuration = random.Next(1, 5); // Vluchtduur tussen 1 en 5 uur
+        int arrivalHour = departureHour + flightDuration;
+
+        return $"{departureHour:00}:00-{arrivalHour:00}:00";
     }
 
     // Methode om beschikbare vluchten terug te geven
@@ -37,67 +118,5 @@ public class BookFlightLogic
         {
             Console.WriteLine($"{i + 1}. {flights[i]}");
         }
-    }
-
-    // Laat de gebruiker een vlucht kiezen
-    public FlightModel SelectFlight()
-    {
-        DisplayAvailableFlights();
-
-        Console.WriteLine("Choose a flight number:");
-        string input = Console.ReadLine();
-        if (int.TryParse(input, out int flightNumber) && flightNumber > 0 && flightNumber <= flights.Count)
-        {
-            return flights[flightNumber - 1];
-        }
-        else
-        {
-            Console.WriteLine("Invalid input. Please try again.");
-            return SelectFlight(); // Opnieuw vragen om invoer als het fout gaat
-        }
-    }
-
-    // Stoel kiezen en vlucht boeken
-    public void BookFlight()
-    {
-        FlightModel selectedFlight = SelectFlight();
-
-        if (selectedFlight.IsFull()) // Controleer of de vlucht vol is
-        {
-            Console.WriteLine("This flight is fully booked. Please try another flight.");
-            return;
-        }
-
-        Console.WriteLine("Choose a seat number:");
-        string seatChoice = Console.ReadLine();
-
-        if (selectedFlight.BookSeat(seatChoice)) // Boek de stoel
-        {
-            Console.WriteLine("Your seat has been booked. Would you like to receive a ticket? (yes/no)");
-            string ticketResponse = Console.ReadLine();
-
-            if (ticketResponse.ToLower() == "yes")
-            {
-                PrintTicket(selectedFlight, seatChoice);
-            }
-            else
-            {
-                Console.WriteLine("Booking cancelled.");
-            }
-        }
-        else
-        {
-            Console.WriteLine("Invalid seat. Please try again.");
-            BookFlight(); // Opnieuw boeken als stoelkeuze fout is
-        }
-    }
-
-    // Print het ticket van de gebruiker
-    private void PrintTicket(FlightModel flight, string seat)
-    {
-        Console.WriteLine("\n--- Your Ticket ---");
-        Console.WriteLine(flight);
-        Console.WriteLine($"Seat: {seat}");
-        Console.WriteLine("-----------------\n");
     }
 }

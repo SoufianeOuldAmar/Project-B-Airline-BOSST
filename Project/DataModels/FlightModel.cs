@@ -6,35 +6,39 @@ public class FlightModel
     public Layout Layout { get; set; }
     public decimal TicketPrice { get; set; }
     public string Gate { get; set; }
-    public string Airport { get; set; }
+    public string DepartureAirport { get; set; }
+    public string ArrivalAirport { get; set; }
+    public string ArrivalDestination { get; set; }
     public bool IsCancelled { get; set; }
-    public List<string> AvailableSeats { get; set; } = new List<string>(); // Beschikbare stoelen
+    public List<string> AvailableSeats { get; set; } = new List<string>();
+    public string DepartureDate { get; set; }
+    public string FlightTime { get; set; }
 
-    public FlightModel(string airline, Layout layout, decimal ticketPrice, string gate, string airport, bool isCancelled)
+    public FlightModel(string airline, Layout layout, decimal ticketPrice, string gate, string departureAirport, string arrivalAirport, string arrivalDestination, bool isCancelled, string departureDate, string flightTime)
     {
         Airline = airline;
         Layout = layout;
         TicketPrice = ticketPrice;
         Gate = gate;
-        Airport = airport;
+        DepartureAirport = departureAirport;
+        ArrivalAirport = arrivalAirport;
+        ArrivalDestination = arrivalDestination;
         IsCancelled = isCancelled;
-
-    // Voeg standaard stoelen toe aan de beschikbare stoelen
+        DepartureDate = departureDate;
+        FlightTime = flightTime;
         AvailableSeats = new List<string> { "1A", "1B", "1C", "2A", "2B", "2C" };
     }
 
-    // Controleer of de vlucht volgeboekt is
     public bool IsFull()
     {
         return AvailableSeats.Count == 0;
     }
 
-    // Boek een stoel en verwijder deze uit de lijst van beschikbare stoelen
     public bool BookSeat(string seat)
     {
         if (AvailableSeats.Contains(seat))
         {
-            AvailableSeats.Remove(seat); // Stoel wordt geboekt en verwijdert van beschikbare stoelen lijst
+            AvailableSeats.Remove(seat);
             return true;
         }
         return false;
@@ -42,6 +46,8 @@ public class FlightModel
 
     public override string ToString()
     {
-        return $"Airline: {Airline}, Ticket Price: {TicketPrice:C}, Gate: {Gate}, Airport: {Airport}, Cancelled: {IsCancelled}";
+        return $"Airline: {Airline}, Ticket Price: {TicketPrice:C}, Gate: {Gate}, Departure Airport: {DepartureAirport}, " +
+               $"Arrival Airport: {ArrivalAirport}, Arrival Destination: {ArrivalDestination}, Departure Date: {DepartureDate}, " +
+               $"Flight Time: {FlightTime}, Cancelled: {IsCancelled}";
     }
 }
