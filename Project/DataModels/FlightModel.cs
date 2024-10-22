@@ -37,6 +37,7 @@ public class FlightModel
 
     // Constructor
     public FlightModel(string airline, LayoutModel layout, decimal ticketPrice, string gate, string departureAirport, string arrivalDestination, bool isCancelled, string departureDate, string flightTime)
+
     {
         Airline = airline;
         Layout = layout;
