@@ -1,0 +1,19 @@
+{
+  "soufiane_ouldamar@outlook.com": [
+    {
+      "FlightID": 1,
+      "BookedSeats": [
+        "10A"
+      ],
+      "IsCancelled": false
+    },
+    {
+      "FlightID": 1,
+      "BookedSeats": [
+        "10A",
+        "10B"
+      ],
+      "IsCancelled": false
+    }
+  ]
+}
