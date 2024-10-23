@@ -1,1 +1,2 @@
-﻿MenuPresentation.Start();
+﻿// MenuPresentation.Start();
+Menu.Start();

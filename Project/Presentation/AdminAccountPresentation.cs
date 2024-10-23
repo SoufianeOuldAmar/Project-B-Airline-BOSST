@@ -21,6 +21,14 @@ static class AdminAccountPresentation
             if (isValid)
             {
                 Console.WriteLine("Login as Admin successful. Welcome!");
+                Console.WriteLine("What do you want to do?");
+                Console.WriteLine("Enter q to logout");
+                string input = Console.ReadLine().ToLower();
+                if (input == "q")
+                {
+                    Console.WriteLine("You logged out");
+                    break;
+                }
 
             }
             else
